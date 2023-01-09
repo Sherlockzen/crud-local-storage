@@ -15,8 +15,25 @@ btnAdd.addEventListener('click',function() {
     getStorage(localStorage)
     generateList()
     inputThing.value = ''
-    console.log(arr);
 })
+
+// O ÍNDICE DO QUERYSELECTOR BATE COM O ÍNDECE NO ARRAY
+let btnDelete = document.querySelectorAll('.btn-delete')
+btnDelete.forEach((elem, ind) => {
+    elem.addEventListener('click', function() {
+        let id = elem.parentElement.id
+        arrIndex = arr.findIndex(item => item.id == id)
+        arr.splice(arrIndex, 1)
+        localStorage.setItem('list', JSON.stringify(arr))
+        getStorage(localStorage)
+        generateList()
+        btnDelete = document.querySelectorAll('.btn-delete')
+        console.log(arrIndex)
+        console.log(ind)
+        return ''
+    })
+})
+
 
 // UTIL FUNCTIONS
 function getStorage(local) {
@@ -30,8 +47,8 @@ function getStorage(local) {
 function generateList() {
     const result = arr.map((item) => {
         return `
-        <article class="articles">
-        <div id="${item.id}">${item.value}</div>
+        <article id="${item.id}" class="articles">
+        <div>${item.value}</div>
         <button class="btn-edit">Edit</button>
         <button class="btn-delete">Delete</button>
         </article>
@@ -39,14 +56,4 @@ function generateList() {
     }).join('')
     
     listThing.innerHTML = result
-}
-
-function deleteItem() {
-    const btnDelete = document.querySelectorAll('.btn-delete')
-    btnDelete.forEach(elem => {
-        elem.addEventListener('click', function() {
-            
-        })
-    })
-    
 }
