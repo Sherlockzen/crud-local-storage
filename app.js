@@ -2,6 +2,8 @@ const btnAdd = document.querySelector('.btn-submit')
 const inputThing = document.getElementById('things')
 const listThing = document.getElementById('list-things')
 
+// QUERYSELECTOR PEGA O PRIMEIRO ELEMENTO HTML QUE FOI ACIONADO PELO EVENTLISTENER
+
 let arr = []
 getStorage(localStorage)
 let cont = arr.length
@@ -18,6 +20,7 @@ btnAdd.addEventListener('click',function() {
 })
 
 // O ÍNDICE DO QUERYSELECTOR BATE COM O ÍNDECE NO ARRAY
+// PRECISO DAR UMA OLHADA COM CARINHO E AMOR
 let btnDelete = document.querySelectorAll('.btn-delete')
 btnDelete.forEach((elem, ind) => {
     elem.addEventListener('click', function() {
