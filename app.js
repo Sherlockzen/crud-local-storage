@@ -21,9 +21,7 @@ btnAdd.addEventListener('click',function() {
 
 
 // O ÍNDICE DO QUERYSELECTOR BATE COM O ÍNDICE NO ARRAY
-function deleteFunc()  {
-    
-    // PRECISO DAR UMA OLHADA COM CARINHO E AMOR
+// PRECISO DAR UMA OLHADA COM CARINHO E AMOR
 let btnDelete = document.querySelectorAll('.btn-delete')
     btnDelete.forEach((elem, ind) => {
        
