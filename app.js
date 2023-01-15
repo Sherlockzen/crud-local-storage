@@ -31,9 +31,10 @@ arr.forEach(elem => {
     listThing.appendChild(article)
     // GENERATING EVENTS OF DELETE
     console.log('teste');
-    const btnDele = document.querySelector('.delBtn')
-    btnDele.addEventListener("click", function() {
-        console.log(btnDele.value)
+    // const btnDele = document.querySelectorAll('.delBtn')
+    // let identi = listThing.firstElementChild
+    delBtn.addEventListener('click', function(e) {
+        btnDel(e.target.parentNode.parentNode.id)
     })
 })
 
@@ -42,18 +43,17 @@ btnAdd.addEventListener('click', function(e) {
     addItem()
 
 })
-function btnDel() {
-    const btnDele = document.querySelectorAll('.delBtn')
-    console.log('btnDel');
-    btnDele.forEach((elem) => {
-        elem.addEventListener('click', function() {
-            console.log(elem.parentNode.parentNode.id);
-            arr = arr.filter(arr => arr.id != elem.parentNode.parentNode.id)
+function btnDel(id) {
+    // const btnDele = document.querySelectorAll('.delBtn')
+    // btnDele.forEach((elem) => {
+        // elem.addEventListener('click', function() {
+            console.log(id);
+            arr = arr.filter(arr => arr.id != id)
             console.log(arr);
             localStorage.setItem('list', JSON.stringify(arr))
-            updateList(1, elem.parentNode.parentNode.id, '')
-        })
-    })
+            updateList(1, id, '')
+        // })
+    // })
 }
 
 function addItem() {
@@ -89,7 +89,13 @@ function updateList(type, id, value) { //Type -> {0 : add}, {1 : delete}, {2 : u
         article.append(div)
         //  <--- Editing DOM ---->
         listThing.appendChild(article)
-        btnDel()
+
+        // btnDel()
+        //  <--- Adding Event --->
+        delBtn.addEventListener('click', function(e) {
+            btnDel(e.target.parentNode.parentNode.id);
+        })
+        inputThing.value = ''
 
     } else if (type === 1) { // Deleting a item
 
