@@ -1,21 +1,105 @@
 const btnAdd = document.querySelector('.btn-submit')
 const inputThing = document.getElementById('things')
 const listThing = document.getElementById('list-things')
-
-//VARIÁVEIS
+// VARIABLES
 let arr = []
-arr = JSON.parse(localStorage.list)
+if (localStorage.length > 0) {
+    arr = JSON.parse(localStorage.list)
+}
 
-function addItem() {
-    btnAdd.addEventListener('submit', function() {
-        event.preventDefault()
-        arr.push({id: +(new Date()), value: inputThing.value})
-        localStorage.setItem('list', JSON.stringify(arr))
+// LOAD THE LIST FROM THE LOCAL STORAGE
+arr.forEach(elem => {
+    //  <--- Creating buttons (edit, delete) ---->
+    let edtBtn = document.createElement("button")
+    edtBtn.className = "edtBtn"
+    edtBtn.innerHTML = "Editar"
+    let delBtn = document.createElement("button")      
+    delBtn.className = "delBtn"
+    delBtn.innerHTML = "Deletar"  
+    //  <--- Creating the <article> ----->
+    let paragraph = document.createElement("p")
+    paragraph.innerHTML = `${elem.value}`
+    let article = document.createElement("article")
+    article.id = `${elem.id}`
+    article.appendChild(paragraph)
+    let div = document.createElement("div")
+    div.className = "btn-container"
+    div.appendChild(edtBtn)
+    div.appendChild(delBtn)
+    article.append(div)
+    //  <--- Editing DOM ---->
+    listThing.appendChild(article)
+    // GENERATING EVENTS OF DELETE
+    console.log('teste');
+    const btnDele = document.querySelector('.delBtn')
+    btnDele.addEventListener("click", function() {
+        console.log(btnDele.value)
+    })
+})
+
+btnAdd.addEventListener('click', function(e) {
+    e.preventDefault()
+    addItem()
+
+})
+function btnDel() {
+    const btnDele = document.querySelectorAll('.delBtn')
+    console.log('btnDel');
+    btnDele.forEach((elem) => {
+        elem.addEventListener('click', function() {
+            console.log(elem.parentNode.parentNode.id);
+            arr = arr.filter(arr => arr.id != elem.parentNode.parentNode.id)
+            console.log(arr);
+            localStorage.setItem('list', JSON.stringify(arr))
+            updateList(1, elem.parentNode.parentNode.id, '')
+        })
     })
 }
 
-function updateList(type, id) { //{0 : add}, {1 : delete}, {2 : update} 
+function addItem() {
+    let id = +(new Date())
+    arr.push({id: id, value: inputThing.value})
+    localStorage.setItem('list', JSON.stringify(arr))
+    updateList(0, id, inputThing.value)
     
+}
+
+
+function updateList(type, id, value) { //Type -> {0 : add}, {1 : delete}, {2 : update} 
+    if (type === 0) { // Adding new item
+
+        //  <--- Creating buttons (edit, delete) ---->
+        let edtBtn = document.createElement("button")
+        edtBtn.className = "edtBtn"
+        edtBtn.innerHTML = "Editar"
+        let delBtn = document.createElement("button")      
+        delBtn.className = "delBtn"
+        delBtn.innerHTML = "Deletar"  
+        //  <--- Creating the <article> ----->
+        let paragraph = document.createElement("p")
+        paragraph.innerHTML = `${value}`
+        let article = document.createElement("article")
+        article.id = `${id}`
+        article.appendChild(paragraph)
+        console.log(article)
+        let div = document.createElement("div")
+        div.className = "btn-container"
+        div.appendChild(edtBtn)
+        div.appendChild(delBtn)
+        article.append(div)
+        //  <--- Editing DOM ---->
+        listThing.appendChild(article)
+        btnDel()
+
+    } else if (type === 1) { // Deleting a item
+
+        const article = document.getElementById(`${id}`)
+        article.remove()
+    } else {    // Updating a item
+
+
+
+    }
 }
 
 
