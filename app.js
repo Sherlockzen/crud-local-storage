@@ -30,11 +30,13 @@ arr.forEach(elem => {
     //  <--- Editing DOM ---->
     listThing.appendChild(article)
     // GENERATING EVENTS OF DELETE
-    console.log('teste');
-    // const btnDele = document.querySelectorAll('.delBtn')
-    // let identi = listThing.firstElementChild
+    console.log('test');
     delBtn.addEventListener('click', function(e) {
         btnDel(e.target.parentNode.parentNode.id)
+    })
+    edtBtn.addEventListener('click', function(e) {
+
+        updateItem(e.target.parentNode.parentNode.id)
     })
 })
 
@@ -44,16 +46,11 @@ btnAdd.addEventListener('click', function(e) {
 
 })
 function btnDel(id) {
-    // const btnDele = document.querySelectorAll('.delBtn')
-    // btnDele.forEach((elem) => {
-        // elem.addEventListener('click', function() {
-            console.log(id);
-            arr = arr.filter(arr => arr.id != id)
-            console.log(arr);
-            localStorage.setItem('list', JSON.stringify(arr))
-            updateList(1, id, '')
-        // })
-    // })
+    console.log(id);
+    arr = arr.filter(arr => arr.id !== id)
+    console.log(arr);
+    localStorage.setItem('list', JSON.stringify(arr))
+    updateList(1, id, '')
 }
 
 function addItem() {
@@ -62,6 +59,13 @@ function addItem() {
     localStorage.setItem('list', JSON.stringify(arr))
     updateList(0, id, inputThing.value)
     
+}
+//ALTERAR VALOR DE UM OBJETO DO ARRAY
+function updateItem(id) {
+    let iden = arr.findIndex(arr => arr.id === id)
+    inputThing.value =
+    console.log(arr.splice(iden, 1, {id: id, value: inputThing.value}))
+
 }
 
 
@@ -95,6 +99,9 @@ function updateList(type, id, value) { //Type -> {0 : add}, {1 : delete}, {2 : u
         delBtn.addEventListener('click', function(e) {
             btnDel(e.target.parentNode.parentNode.id);
         })
+        edtBtn.addEventListener('click', function(e) {
+            updateItem(e.target.parentNode.parentNode.id)
+        })
         inputThing.value = ''
 
     } else if (type === 1) { // Deleting a item
@@ -107,95 +114,3 @@ function updateList(type, id, value) { //Type -> {0 : add}, {1 : delete}, {2 : u
 
     }
 }
-
-
-
-
-
-
-
-// // QUERYSELECTOR PEGA O PRIMEIRO ELEMENTO HTML QUE FOI ACIONADO PELO EVENTLISTENER
-
-// let arr = []
-// getStorage(localStorage)
-// // let cont = arr.length
-// generateList()
-// // let btnDelete = document.querySelectorAll('.btn-delete')
-
-// btnAdd.addEventListener('click',function() {
-//     event.preventDefault()
-//     arr.push({value: inputThing.value})
-//     localStorage.setItem('list', JSON.stringify(arr))
-//     getStorage(localStorage)
-//     generateList()
-//     inputThing.value = ''
-// })
-
-
-// // O ÍNDICE DO QUERYSELECTOR BATE COM O ÍNDICE NO ARRAY
-// // PRECISO DAR UMA OLHADA COM CARINHO E AMOR
-// let btnDelete = document.querySelectorAll('.btn-delete')
-//     btnDelete.forEach((elem, ind) => {
-       
-//         elem.addEventListener('click', function() {
-//             console.log('CLICOU');
-//             // let id = elem.parentElement.id
-//             // arrIndex = arr.findIndex(item => item.id == id)
-//             arr.splice(ind, 1)
-//             localStorage.setItem('list', JSON.stringify(arr))
-//             getStorage(localStorage)
-//             generateList()
-//             // btnDelete = document.querySelectorAll('.btn-delete')
-//             console.log(btnDelete)
-//             console.log(ind)
-            
-//         })
-//     })
-
-
-// // O ÍNDICE DO QUERYSELECTOR BATE COM O ÍNDICE NO ARRAY
-// function deleteFunc()  {
-    
-//     let btnDelete = document.querySelectorAll('.btn-delete')
-//     btnDelete.forEach((elem, ind) => {
-       
-//         elem.addEventListener('click', function() {
-//             console.log('CLICOU');
-//             // let id = elem.parentElement.id
-//             // arrIndex = arr.findIndex(item => item.id == id)
-//             arr.splice(ind, 1)
-//             localStorage.setItem('list', JSON.stringify(arr))
-//             getStorage(localStorage)
-//             generateList()
-//             // btnDelete = document.querySelectorAll('.btn-delete')
-//             console.log(btnDelete)
-//             console.log(ind)
-            
-//         })
-//     })
-// } 
-    
-
-// // UTIL FUNCTIONS
-// function getStorage(local) {
-//     if (local.length !== 0) {
-//         arr = JSON.parse(local.list)
-//     } else {
-//         arr = []
-//     }
-// }
-
-// function generateList() {
-//     const result = arr.map((item) => {
-//         return `
-//         <article id="${item.id}" class="articles">
-//         <div>${item.value}</div>
-//         <button class="btn-edit">Edit</button>
-//         <button class="btn-delete">Delete</button>
-//         </article>
-//         `
-//     }).join('')
-    
-//     listThing.innerHTML = result
-//     deleteFunc()
-// }
