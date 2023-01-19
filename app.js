@@ -33,43 +33,59 @@ arr.forEach(elem => {
     console.log('test');
     delBtn.addEventListener('click', function(e) {
         btnDel(e.target.parentNode.parentNode.id)
+        console.log(`Delete pressionado, id do avô: ${e.target.parentNode.parentNode.id}`)
     })
     edtBtn.addEventListener('click', function(e) {
-
-        updateItem(e.target.parentNode.parentNode.id)
+        // let iden = arr.findIndex(arr => arr.id === id)
+        // let id = e.target.parentNode.parentNode.id
+        // inputThing.value = e.target.parentNode.parentNode.firstElementChild.innerHTML
+        //     //arr.find(arr => arr.id === id).value
+        // btnAdd.id = `${id}`
+        // btnAdd.classList.add("edit")
+        // btnAdd.innerHTML = 'Editar'
+        // inputThing.focus()
+        updateItem(e.target.parentNode.parentNode.id, e.target.parentNode.parentNode.firstElementChild.innerHTML)
     })
 })
 
 btnAdd.addEventListener('click', function(e) {
     e.preventDefault()
     addItem()
-
 })
+// <-------- FUNCTIONS -------->
+function updateItem(id, value) {
+    inputThing.value = value
+    btnAdd.id = `${id}`
+    btnAdd.classList.add("edit")
+    btnAdd.innerHTML = 'Editar'
+    inputThing.focus()
+}
 function btnDel(id) {
-    console.log(id);
-    arr = arr.filter(arr => arr.id !== id)
-    console.log(arr);
+    console.log(typeof id);
+    let resuArr = arr.filter(array => array.id !== Number(id))
+    console.log(resuArr);
+    arr = resuArr
     localStorage.setItem('list', JSON.stringify(arr))
     updateList(1, id, '')
 }
 
 function addItem() {
-    let id = +(new Date())
-    arr.push({id: id, value: inputThing.value})
-    localStorage.setItem('list', JSON.stringify(arr))
-    updateList(0, id, inputThing.value)
-    
+    if (btnAdd.classList.contains("edit")) {
+        let id = Number(btnAdd.id)
+        btnAdd.removeAttribute('id')
+        let index = arr.findIndex(arr => arr.id === id)
+        arr.splice(index, 1, {id: id, value: inputThing.value})
+        localStorage.setItem('list', JSON.stringify(arr))
+        updateList(2, id, inputThing.value)
+        btnAdd.innerHTML = 'Adcionar'
+    } else {
+        let id = +(new Date())
+        arr.push({id: id, value: inputThing.value})
+        localStorage.setItem('list', JSON.stringify(arr))
+        updateList(0, id, inputThing.value)
+    }
 }
-//ALTERAR VALOR DE UM OBJETO DO ARRAY
-function updateItem(id) {
-    let iden = arr.findIndex(arr => arr.id === id)
-    inputThing.value =
-    console.log(arr.splice(iden, 1, {id: id, value: inputThing.value}))
-
-}
-
-
-function updateList(type, id, value) { //Type -> {0 : add}, {1 : delete}, {2 : update} 
+function updateList(type, id, value) { //Type -> {0 : add}, {1 : delete}, {2 : update}
     if (type === 0) { // Adding new item
 
         //  <--- Creating buttons (edit, delete) ---->
@@ -100,17 +116,17 @@ function updateList(type, id, value) { //Type -> {0 : add}, {1 : delete}, {2 : u
             btnDel(e.target.parentNode.parentNode.id);
         })
         edtBtn.addEventListener('click', function(e) {
-            updateItem(e.target.parentNode.parentNode.id)
+            updateItem(e.target.parentNode.parentNode.id, e.target.parentNode.parentNode.firstElementChild.innerHTML)
         })
         inputThing.value = ''
 
-    } else if (type === 1) { // Deleting a item
-
+    } else if (type === 1) { // Deleting an item
         const article = document.getElementById(`${id}`)
         article.remove()
     } else {    // Updating a item
-
-
+        console.log(document.getElementById(`${id}`))
+        const article = document.getElementById(`${id}`)
+        article.firstElementChild.innerHTML = value
 
     }
 }
